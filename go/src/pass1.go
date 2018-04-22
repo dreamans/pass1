@@ -24,7 +24,7 @@ func main() {
     }
 
     s := strings.Join([]string{rawPass, salt}, "")
-    md5Pwd := makeMd5(s)
+    md5Pwd := makeMd5(makeMd5(s))
     base64Pwd := makeBase64(md5Pwd)
 
     rawPwd := string([]byte(base64Pwd)[:10]) + "0" + "Z" + "a" + string([]byte(md5Pwd)[:3])
