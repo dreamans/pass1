@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset=utf-8>
+        <meta http-equiv=X-UA-Compatible content="IE=edge">
+        <meta name=viewport content="width=device-width,initial-scale=1">
+        <title>pass1</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.css">
+        <script src="md5.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+        <script src="base64.min.js"></script>
+        <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+        <script>
+            $(document).ready(function(){
+                $("#create").click(function() {
+                    var rawPwdElement = $("#raw-password");
+                    var saltElement = $("#salt");
+                    var newPwdElement = $("#new-password");
+
+                    var md5Pwd = md5(md5(rawPwdElement.val() + saltElement.val()));
+                    var base64Pwd = Base64.encode(md5Pwd);
+
+                    var newPwd = base64Pwd.substring(0, 10) + '0' + 'Z' + 'a' + md5Pwd.substring(0, 3);
+                    newPwdElement.text(newPwd);
+                })
+                var clipboard = new ClipboardJS('#copy');
+                clipboard.on('success', function(e) {  
+                    $("#copy-tips").text("复制成功！");
+                    setTimeout(function() {
+                        $("#copy-tips").text("");
+                    }, 1500);
+                });  
+            })
+        </script>
+    </head>
+    <body>
+        <section class="section">
+            <div class="container">
+                <div class="field">
+                    <label class="label">Please input raw password</label>
+                    <div class="control">
+                        <input class="input" type="password" id="raw-password" autocomplete="off">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Please input salt</label>
+                    <div class="control">
+                        <input id="salt" class="input" type="text" id="raw-password" autocomplete="off">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <a id="create" class="button is-success">生成</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <p style="color:#00d1b2;" id="new-password"></p>
+                    </div>
+                    <footer class="card-footer">
+                        <p class="card-footer-item">
+                            <a class="button is-white" id="copy" data-clipboard-action="copy" data-clipboard-target="#new-password">复制到剪切板</a>
+                            <span id="copy-tips"></span>
+                        </p>
+                    </footer>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>
