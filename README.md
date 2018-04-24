@@ -13,3 +13,4 @@
 ## 语言实现
 
 * Go 
+* JavaScript (+HTML)
